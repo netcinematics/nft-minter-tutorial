@@ -3,7 +3,8 @@
 body {
   margin: 0;
   font-family: 'Rubik';
-  color: #254cdd;
+  /* color: #254cdd; */
+  color:steelblue;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

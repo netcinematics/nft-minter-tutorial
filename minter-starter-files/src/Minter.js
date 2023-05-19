@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import {connectWallet, getCurrentWalletConnected, mintNFT} from './utils/interact.js'
+import { useEffect, useState } from "react"; 
 
 const Minter = (props) => {
 
@@ -9,17 +10,51 @@ const Minter = (props) => {
   const [description, setDescription] = useState("");
   const [url, setURL] = useState("");
  
-  useEffect(async () => { //TODO: implement
-    
+  useEffect(async () => {
+    const {address, status} = await getCurrentWalletConnected(); //2. Keep connection
+    setWallet(address)
+    setStatus(status);
+    addWalletListener(); 
   }, []);
 
-  const connectWalletPressed = async () => { //TODO: implement
+  const connectWalletPressed = async () => { //1. Connect Wallet
+    const walletResponse = await connectWallet();
+    setStatus(walletResponse.status);
+    setWallet(walletResponse.address);
    
   };
 
-  const onMintPressed = async () => { //TODO: implement
-    
-  };
+
+  function addWalletListener() { //3. respond to account change.
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", (accounts) => {
+        if (accounts.length > 0) {
+          setWallet(accounts[0]);
+          setStatus("👆🏽 Write a message in the text-field above.");
+        } else {
+          setWallet("");
+          setStatus("🦊 Connect to Metamask using the top right button.");
+        }
+      });
+    } else {
+      setStatus(
+        <p>
+          {" "}
+          🦊{" "}
+          <a target="_blank" href={`https://metamask.io/download.html`}>
+            You must install Metamask, a virtual Ethereum wallet, in your
+            browser.
+          </a>
+        </p>
+      );
+    }
+  }
+
+
+  const onMintPressed = async () => {
+    const { status } = await mintNFT(url, name, description);
+    setStatus(status);
+};
 
   return (
     <div className="Minter">
