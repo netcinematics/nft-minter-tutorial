@@ -88,10 +88,10 @@ export const getCurrentWalletConnected = async () => {
 /***************END-WALLET-FNs********************/
 
 /***************BEGIN-WEB-FNs********************/
-async function loadContract() {
-  debugger;
-  return new web3.eth.Contract(contractABI, contractAddress);
-}
+// async function loadContract() {
+//   debugger;
+//   return new web3.eth.Contract(contractABI, contractAddress);
+// }
 
 export const mintNFT = async (url, name, description) => {
   if (url.trim() == "" || name.trim() == "" || description.trim() == "") {
